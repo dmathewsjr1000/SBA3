@@ -22,13 +22,18 @@ const resetFields = () => {
 async function getPokemon(num) {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
   const data = await response.json();
+  const placeHolder = "---";
   imageScreen.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`;
   nameScreen.innerHTML = data.name.toUpperCase();
-  height.innerHTML = `${data.height * 10} cm`;
-  weight.innerHTML = `${data.weight / 10} kg`;
-  type1.innerHTML = data.types[0].type.name.toUpperCase();
-  type2.innerHTML = data.types[1].type.name.toUpperCase();
-  // type2.innerHTML !== false ? type2.innerHTML = data.types[1].type.name.toUpperCase(): type2.innerHTML = 'none'
+  height.innerHTML = `${data.height * 10} CM`;
+  weight.innerHTML = `${data.weight / 10} KG`;
+  if (data.types[1] !== undefined) {
+    type1.innerHTML = data.types[0].type.name.toUpperCase();
+    type2.innerHTML = data.types[1].type.name.toUpperCase();
+  } else {
+    type1.innerHTML = data.types[0].type.name.toUpperCase();
+    type2.innerHTML = placeHolder;
+  }
 }
 
 // Event listener that catches enter keydown for other modes of entering data

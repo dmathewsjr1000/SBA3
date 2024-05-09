@@ -24,17 +24,29 @@ async function getPokemon(num) {
   resetFields();
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
   const data = await response.json();
+  const placeHolder = "---";
   imageScreen.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`;
   nameScreen.innerHTML = data.name.toUpperCase();
   height.innerHTML = `${data.height * 10} CM`;
   weight.innerHTML = `${data.weight / 10} KG`;
-  type1.innerHTML = data.types[0].type.name.toUpperCase();
-  type2.innerHTML = data.types[1].type.name.toUpperCase();
+  if (data.types[1] !== undefined) {
+    type1.innerHTML = data.types[0].type.name.toUpperCase();
+    type2.innerHTML = data.types[1].type.name.toUpperCase();
+  } else {
+    type1.innerHTML = data.types[0].type.name.toUpperCase();
+    type2.innerHTML = placeHolder;
+  }
 }
 
 // Increasing Counter of the input data of pokemon id
 export function increase(num) {
   inputField.value++;
+  if (inputField.value > 898) {
+    alert(
+      "The pokedex does not have pokemon ids greater than 898 as of yet please enter a new id:"
+    );
+    reset(inputField.value);
+  }
   console.log(inputField.value);
   getPokemon(inputField.value);
 }
@@ -46,11 +58,13 @@ export function decrease(num) {
     alert("The pokedex does not have 0 or negative ids please enter a new id:");
     reset(inputField.value);
   }
+  console.log(inputField.value);
   getPokemon(inputField.value);
 }
 
 // Resetting Counter to the first pokemon id
 export function reset(num) {
   inputField.value = 1;
+  console.log(inputField.value);
   getPokemon(inputField.value);
 }
